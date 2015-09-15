@@ -1,9 +1,23 @@
-angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$log', '$scope', '$localForage', function ($log, $scope, $localForage) {
+angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$log', '$scope', '$localForage', '$cordovaLocalNotification', function ($log, $scope, $localForage, $cordovaLocalNotification) {
 
 	$log.debug('HomeCtrl is loaded.');
 
 	$scope.event = 'Waiting...';
 	$scope.icon = 'ion-ios-clock-outline';
+
+	$scope.sendPush = function(pushMessage,pushTitle) {
+        var notificationTime = new Date();
+        $cordovaLocalNotification.add({
+            id: "1234",
+            date: notificationTime,
+            message: pushMessage,
+            title: pushTitle,
+            autoCancel: true,
+            sound: "file://sounds/beep.caf"
+        }).then(function () {
+            console.log("The notification has been set");
+        });
+    };
 
 	$scope.updateMonitoringEvent = function () {
 
@@ -13,10 +27,12 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$log', '$s
 			if (monitoringEvents[monitoringEvents.length-1].state === 'CLRegionStateInside'){
 				$scope.event = 'In range!';
 				$scope.icon = 'ion-eye';
+				$scope.sendPush('In range!', 'Region Entered');
 			}
 			else {
 				$scope.event = 'Out of range :-(';
-					$scope.icon = 'ion-eye-disabled';
+				$scope.icon = 'ion-eye-disabled';
+				$scope.sendPush('Out of range :-(', 'Region Exited');
 			}
 		});
 	};
