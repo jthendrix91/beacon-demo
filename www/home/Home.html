@@ -4,13 +4,12 @@
 
 <ion-view ng-controller="HomeCtrl">
     <ion-content class="has-header padding center large">
-
-            <ion-item>
-                <span>{{event}}</span>
-            </ion-item>
-            <ion-item>
-                <span class="{{icon}} center"></span>
-            </ion-item>
-
+        <ion-item>
+            <span>{{event}}</span>
+        </ion-item>
+        <ion-item>
+            <span class="{{icon}} center"></span>
+        </ion-item>            
+    	<ion-toggle ng-model="salesforceMode.enabled" ng-change="resetStatusVariables()">{{salesforceMode.title}}</ion-toggle>
     </ion-content>
 </ion-view>
