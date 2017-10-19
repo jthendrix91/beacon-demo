@@ -7,15 +7,12 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$log', '$s
 
 	$scope.sendPush = function(pushMessage,pushTitle) {
         var notificationTime = new Date();
-        $cordovaLocalNotification.add({
-            id: "1234",
-            date: notificationTime,
-            message: pushMessage,
+        $cordovaLocalNotification.schedule({
+            text: pushMessage,
             title: pushTitle,
-            autoCancel: true,
             sound: "file://sounds/beep.caf"
         }).then(function () {
-            console.log("The notification has been set");
+            console.log("The notification has been sent");
         });
     };
 
