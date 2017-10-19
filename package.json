@@ -1,17 +1,31 @@
 {
-  "name": "beacon-demo",
-  "version": "1.0.0",
-  "description": "Helps you get going with building location-aware apps that interact with Estimotes.",
-  "dependencies": {
-    "gulp": "^3.5.8",
-    "gulp-sass": "^0.7.1",
-    "gulp-concat": "^2.2.0",
-    "gulp-minify-css": "^0.3.0",
-    "gulp-rename": "^1.2.0"
-  },
-  "devDependencies": {
-    "bower": "^1.3.3",
-    "gulp-util": "^2.2.14",
-    "shelljs": "^0.3.0"
-  }
+    "name": "beacon-demo",
+    "version": "1.0.0",
+    "description": "Helps you get going with building location-aware apps that interact with Estimotes.",
+    "dependencies": {
+        "com.unarin.cordova.beacon": "^3.5.2",
+        "cordova-ios": "^4.4.0",
+        "cordova-plugin-app-event": "file:node_modules/cordova-plugin-app-event",
+        "cordova-plugin-device": "file:node_modules/cordova-plugin-device",
+        "de.appplant.cordova.plugin.local-notification": "^0.8.5",
+        "gulp": "^3.9.1",
+        "gulp-concat": "^2.6.1",
+        "gulp-minify-css": "^0.3.0",
+        "gulp-rename": "^1.2.0"
+    },
+    "devDependencies": {
+        "bower": "^1.8.2",
+        "gulp-sass": "^3.1.0",
+        "gulp-util": "^2.2.14",
+        "shelljs": "^0.3.0"
+    },
+    "cordova": {
+        "plugins": {
+            "com.unarin.cordova.beacon": {},
+            "de.appplant.cordova.plugin.local-notification": {}
+        },
+        "platforms": [
+            "ios"
+        ]
+    }
 }
