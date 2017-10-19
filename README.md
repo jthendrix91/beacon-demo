@@ -1,7 +1,7 @@
 Beacon Demo
 =====================
 
-A starting project for ranging/region monitoring with Estimote beacons.
+A starting project for ranging/region monitoring with Estimote beacons and Salesforce data.
 
 This project was piggy-backed off the great [Cordova Proximity Plugin](https://github.com/petermetz/cordova-plugin-ibeacon) app built by Peter Metz.
 
@@ -18,6 +18,12 @@ second/third tab, or by modifying the default values in the source code (see the
 ## Prerequisites
 
 * [Buy estimotes](http://estimote.com/) :-)
+
+* [Create a Salesforce Developer Org](https://developer.salesforce.com/signup)
+
+* Import Salesforce Apex REST Service from [partner repository](https://github.com/scottbcovert/salesforce-beacon-demo-apex)
+
+* [Setup Salesforce Apex REST Endpoint with Sites](http://www.wadewegner.com/2013/03/creating-anonymous-rest-apis-with-salesforce-com/)
 
 * Install node and npm (Note: Due to current issues with npm v5 I'd recommend installing Node v7.10.1 with npm v4.2.0 via nvm).
 
@@ -38,8 +44,12 @@ second/third tab, or by modifying the default values in the source code (see the
     
 ## Usage
 
-After a clean checkout, make sure to add one or all of the supported platforms before running.
+After a clean checkout, you should update HomeCtrl.js with your own custom REST Url and a corresponding contact id from your Salesforce org that is tied to an open opportunity. You can also update the Ranging.html and Monitoring.html pages to automatically load with default values that match your estimotes.
     
+    # Setup proper custom REST endpoint and create a mock customer using the id of a Salesforce contact that relates to an opportunity in HomeCtrl.js
+
+    # Optionally update the Ranging.html and Monitoring.html pages to automatically load with default values that match your estimotes
+
     # Install NPM dependencies
     npm install
     
