@@ -2,14 +2,16 @@ angular.module('co.tython.beacon.demo.eventlog').controller('EventLogCtrl', ['$l
 
 	$log.debug('EventLogCtrl is loaded.');
 
-	$scope.events = [];
+	$scope.logs = [];
 
 	$scope.updateMonitoringEvents = function () {
 
 		$log.debug('updateMonitoringEvents()');
 
-		$localForage.getItem('monitoring_events').then(function (monitoringEvents) {
-			$scope.events = monitoringEvents;
+		$localForage.getItem('monitoring_event').then(function (monitoringEvent) {
+			$scope.logs.unshift({
+				event : monitoringEvent.region.identifier + ' Region ' + (monitoringEvent.state === 'CLRegionStateInside' ? 'Entered' : 'Exited')
+			});
 		});
 	};
 
@@ -17,15 +19,19 @@ angular.module('co.tython.beacon.demo.eventlog').controller('EventLogCtrl', ['$l
 		
 		$log.debug('updateRangingEvents()');
 
-		$localForage.getItem('ranging_events').then(function (rangingEvents) {
-			$scope.events = rangingEvents;
+		$localForage.getItem('ranging_event').then(function (rangingEvent) {
+			if (rangingEvent.beacons && rangingEvent.beacons[0]) {
+				$scope.logs.unshift({
+					event : 'Ranging Status: ' + rangingEvent.beacons[0].proximity
+				});
+			}			
 		});
 	};
 
 	$log.debug('Subscribing for updates of monitoring events.');
-	$scope.$on('updated_monitoring_events', $scope.updateMonitoringEvents);
+	$scope.$on('updated_monitoring_event', $scope.updateMonitoringEvents);
 
 	$log.debug('Subscribing for updates of ranging events.');
-	$scope.$on('updated_ranging_events', $scope.updateRangingEvents);
+	$scope.$on('updated_ranging_event', $scope.updateRangingEvents);
 
 }]);
