@@ -33,20 +33,7 @@ angular.module('co.tython.beacon.demo.ranging')
 			$log.debug('didRangeBeaconsInRegion()', pluginResult);
 			pluginResult.id = new Date().getTime();
 			pluginResult.timestamp = new Date();
-
-			$localForage.getItem('ranging_events')
-				.then(function (rangingEvents) {
-					if (!angular.isArray(rangingEvents)) {
-						rangingEvents = [];
-					}
-
-					rangingEvents.push(pluginResult);
-					return rangingEvents;
-				}).then(function (rangingEvents) {
-					$localForage.setItem('ranging_events', rangingEvents);
-					
-					$rootScope.$broadcast('updated_ranging_events');					
-				});
+			$localForage.setItem('ranging_event', pluginResult).then($rootScope.$broadcast('updated_ranging_event'));							
 		};
 
 		delegate.didStopMonitoringForRegion = function (pluginResult) {

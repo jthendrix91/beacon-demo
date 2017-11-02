@@ -33,20 +33,7 @@ angular.module('co.tython.beacon.demo.monitoring')
 			$log.debug('didDetermineStateForRegion()', pluginResult);
 			pluginResult.id = new Date().getTime();
 			pluginResult.timestamp = new Date();
-
-			$localForage.getItem('monitoring_events')
-				.then(function (monitoringEvents) {
-					if (!angular.isArray(monitoringEvents)) {
-						monitoringEvents = [];
-					}
-
-					monitoringEvents.push(pluginResult);
-					return monitoringEvents;
-				}).then(function (monitoringEvents) {
-					$localForage.setItem('monitoring_events', monitoringEvents);
-
-					$rootScope.$broadcast('updated_monitoring_events');
-				});
+			$localForage.setItem('monitoring_event', pluginResult).then($rootScope.$broadcast('updated_monitoring_event'));				
 		};
 
 		delegate.didStartMonitoringForRegion = function (pluginResult) {

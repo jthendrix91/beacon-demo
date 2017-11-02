@@ -1,4 +1,4 @@
-angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$ionicPopup', '$log', '$scope', '$rootScope', '$localForage', '$cordovaLocalNotification', function ($http, $ionicPopup, $log, $scope, $rootScope, $localForage, $cordovaLocalNotification) {
+angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$ionicPopup', '$log', '$scope', '$rootScope', '$localForage', '$cordovaLocalNotification', '$timeout', function ($http, $ionicPopup, $log, $scope, $rootScope, $localForage, $cordovaLocalNotification, $timeout) {
 
 	$log.debug('HomeCtrl is loaded.');
 
@@ -54,22 +54,23 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$
 	};
 
 	$scope.sendPush = function(pushMessage,pushTitle) {
-        var notificationTime = new Date();
-        $cordovaLocalNotification.schedule({
-            text: pushMessage,
-            title: pushTitle,
-            sound: "file://sounds/beep.caf"
-        }).then(function () {
-            console.log("The notification has been sent");
-        });
+        $timeout(function() {
+        	$cordovaLocalNotification.schedule({
+	            text: pushMessage,
+	            title: pushTitle,
+	            sound: "file://sounds/beep.caf"
+	        }).then(function () {
+	            console.log("The notification has been sent");
+	        });
+        },100);        
     };
 
 	$scope.updateMonitoringEvent = function () {
 		$log.debug('updateMonitoringEvent()');
 
-		$localForage.getItem('monitoring_events').then(function (monitoringEvents) {
-			if (monitoringEvents[monitoringEvents.length-1] && monitoringEvents[monitoringEvents.length-1].region) {
-				if (monitoringEvents[monitoringEvents.length-1].state === 'CLRegionStateInside'){
+		$localForage.getItem('monitoring_event').then(function (monitoringEvent) {
+			if (monitoringEvent.region) {
+				if (monitoringEvent.state === 'CLRegionStateInside'){
 					$scope.event = 'In range!';
 					$scope.icon = 'ion-eye';
 					$scope.regionStatus = 'Entered';
@@ -83,7 +84,7 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$
 					$scope.sendPush($scope.event, 'Region ' + $scope.regionStatus);
 				}
 				else if ($scope.regionStatus === 'Entered' && $rootScope.regionEntered === false){					
-					callout($scope.regionStatus, monitoringEvents[monitoringEvents.length-1].region);
+					callout($scope.regionStatus, monitoringEvent.region);
 					$rootScope.regionEntered = true;
 				}
 				else if ($scope.regionStatus === 'Exited' && $rootScope.regionExited === false){
@@ -98,32 +99,34 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$
 		
 		$log.debug('updateRangingEvent()');
 
-		$localForage.getItem('ranging_events').then(function (rangingEvents) {
-			$scope.event = rangingEvents[rangingEvents.length-1].beacons[0].proximity;
-			if ($scope.event === 'ProximityImmediate'){
-				$scope.icon = 'ion-volume-high';
-				if ($rootScope.proximityImmediate === false && $rootScope.salesforceMode.enabled === true){
-					callout('popup');
-					$rootScope.proximityImmediate = true;
-				}				
-			}
-			else if ($scope.event === 'ProximityNear'){
-				$scope.icon = 'ion-volume-medium';
-			}
-			else if ($scope.event === 'ProximityFar'){
-				$scope.icon = 'ion-volume-low';
-			}
-			else {
-				// Unknown
-				$scope.icon = 'ion-ios-help-outline';
-			}
+		$localForage.getItem('ranging_event').then(function (rangingEvent) {			
+			if (rangingEvent.beacons && rangingEvent.beacons[0]) {
+				$scope.event = rangingEvent.beacons[0].proximity;
+				if ($scope.event === 'ProximityImmediate'){
+					$scope.icon = 'ion-volume-high';
+					if ($rootScope.proximityImmediate === false && $rootScope.salesforceMode.enabled === true){
+						callout('popup');
+						$rootScope.proximityImmediate = true;
+					}				
+				}
+				else if ($scope.event === 'ProximityNear'){
+					$scope.icon = 'ion-volume-medium';
+				}
+				else if ($scope.event === 'ProximityFar'){
+					$scope.icon = 'ion-volume-low';
+				}
+				else {
+					// Unknown
+					$scope.icon = 'ion-ios-help-outline';
+				}
+			}			
 		});
 	};
 
 	$log.debug('Subscribing for updates of monitoring events.');
-	$scope.$on('updated_monitoring_events', $scope.updateMonitoringEvent);
+	$scope.$on('updated_monitoring_event', $scope.updateMonitoringEvent);
 
 	$log.debug('Subscribing for updates of ranging events.');
-	$scope.$on('updated_ranging_events', $scope.updateRangingEvent);
+	$scope.$on('updated_ranging_event', $scope.updateRangingEvent);
 
 }]);
