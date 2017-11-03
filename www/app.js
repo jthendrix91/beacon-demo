@@ -67,6 +67,16 @@ angular.module('co.tython.beacon.demo', [
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
+
+    // OneSignal Push Notification Setup
+    var notificationOpenedCallback = function(jsonData) {
+    	console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+  	};
+    window.plugins.OneSignal
+    	.startInit("YOUR_ONESIGNAL_APPID")
+    	.handleNotificationOpened(notificationOpenedCallback)
+    	.endInit();
+
   });
 });
 

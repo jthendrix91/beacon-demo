@@ -57,4 +57,5 @@
     <engine name="ios" spec="^4.4.0" />
     <plugin name="com.unarin.cordova.beacon" spec="^3.5.2" />
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
+    <plugin name="onesignal-cordova-plugin" spec="^2.2.2" />
 </widget>
