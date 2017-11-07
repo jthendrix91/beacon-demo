@@ -27,12 +27,6 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$
 							// Closed
 						});
 				}
-				else if (response && type === 'Entered'){
-					$scope.sendPush(response.data.Description,type + ': ' + response.data.Name);
-				}
-				else if (response && type === 'Exited'){
-					$scope.sendPush(response.data.Description,type + ': ' + response.data.Name);
-				}
 			});
 	}	
 
@@ -53,18 +47,6 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$
 		$rootScope.proximityImmediate = false;
 	};
 
-	$scope.sendPush = function(pushMessage,pushTitle) {
-        $timeout(function() {
-        	$cordovaLocalNotification.schedule({
-	            text: pushMessage,
-	            title: pushTitle,
-	            sound: "file://sounds/beep.caf"
-	        }).then(function () {
-	            console.log("The notification has been sent");
-	        });
-        },100);        
-    };
-
 	$scope.updateMonitoringEvent = function () {
 		$log.debug('updateMonitoringEvent()');
 
@@ -80,14 +62,11 @@ angular.module('co.tython.beacon.demo.home').controller('HomeCtrl', ['$http', '$
 					$scope.icon = 'ion-eye-disabled';
 					$scope.regionStatus = 'Exited';					
 				}
-				if ($rootScope.salesforceMode.enabled === false) {					
-					$scope.sendPush($scope.event, 'Region ' + $scope.regionStatus);
-				}
-				else if ($scope.regionStatus === 'Entered' && $rootScope.regionEntered === false){					
+				if ($rootScope.salesforceMode.enabled === true && $scope.regionStatus === 'Entered' && $rootScope.regionEntered === false){					
 					callout($scope.regionStatus, monitoringEvent.region);
 					$rootScope.regionEntered = true;
 				}
-				else if ($scope.regionStatus === 'Exited' && $rootScope.regionExited === false){
+				else if ($rootScope.salesforceMode.enabled === true && $scope.regionStatus === 'Exited' && $rootScope.regionExited === false){
 					callout($scope.regionStatus);				
 					$rootScope.regionExited = true;
 				}
