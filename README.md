@@ -25,6 +25,8 @@ second/third tab, or by modifying the default values in the source code (see the
 
 * [Setup Salesforce Apex REST Endpoint with Sites](http://www.wadewegner.com/2013/03/creating-anonymous-rest-apis-with-salesforce-com/)
 
+* [Create a OneSignal account and an iOS push certificate](https://documentation.onesignal.com/v3.0/docs/generate-an-ios-push-certificate)
+
 * Install node and npm (Note: Due to current issues with npm v5 I'd recommend installing Node v7.10.1 with npm v4.2.0 via nvm).
 
     ```
@@ -47,6 +49,8 @@ second/third tab, or by modifying the default values in the source code (see the
 After a clean checkout, you should update HomeCtrl.js with your own custom REST Url and a corresponding contact id from your Salesforce org that is tied to an open opportunity. You can also update the Ranging.html and Monitoring.html pages to automatically load with default values that match your estimotes.
     
     # Setup proper custom REST endpoint and create a mock customer using the id of a Salesforce contact that relates to an opportunity in HomeCtrl.js
+
+    # Enter your OneSignal app id in app.js
 
     # Optionally update the Ranging.html and Monitoring.html pages to automatically load with default values that match your estimotes
 
